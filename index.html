@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#110C19">
+<meta name="theme-color" content="#FF7A1A">
 <title>Noite das Fantasias</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Karla:wght@400;500;700&family=Pirata+One&display=swap">
-<style>html{-webkit-text-size-adjust:100%;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);background:#110C19}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>html{-webkit-text-size-adjust:100%;padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px);background:#FF7A1A}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <style>
 /* Conceito: mansão assombrada. O cartaz da festa é o quadro principal numa moldura dourada com brilho de vela; título em letras de fogo; morcegos, faíscas e névoa ao fundo; velas marcam as etapas; cada foto vira um retrato emoldurado com plaquinha de latão e selo de cera ao votar. Tema noturno único, letras grandes e botões altos para leitura fácil. */
 :root{
@@ -206,6 +206,7 @@ label.pickbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-wi
 .also li{display:flex;justify-content:space-between;gap:10px}
 .also b{font-family:var(--mono);font-weight:500;color:var(--ink)}
 .empty{border:2px dashed var(--edge);border-radius:18px;padding:38px 18px;text-align:center;color:var(--mute);display:flex;flex-direction:column;gap:6px;align-items:center}
+.empty.soon p{max-width:34ch}
 .empty h3{color:var(--ink);font-family:var(--display);font-weight:400;font-size:1.6rem}
 
 /* tutorial */
@@ -413,6 +414,8 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
       emptyT: 'Nenhum prato ainda', emptyP: 'Quem for levar um prato temático envia a foto pelo formulário acima.' }
   ];
   const PHASES = [
+    { id: 'espera', label: 'Em breve', sub: 'Aguarde a festa',
+      note: ['Em breve', 'O site ainda não abriu para envios nem votos. No dia da festa você poderá mandar as fotos e votar.'] },
     { id: 'inscricoes', label: 'Inscrições', sub: 'Envie as fotos',
       note: ['Inscrições abertas', 'Quando a votação abrir, ninguém mais poderá enviar ou trocar fotos.'] },
     { id: 'votacao', label: 'Votação', sub: 'Vote nos favoritos',
@@ -619,8 +622,10 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
     const texts = {
       votacao: ['Abrir a votação?', 'As inscrições serão encerradas: ninguém mais poderá enviar ou trocar fotos. Hoje há ' + plural(e, 'fantasia', 'fantasias') + ' e ' + plural(d, 'prato', 'pratos') + '.', 'Abrir votação'],
       resultado: ['Encerrar a votação?', 'Nenhum voto novo será aceito. ' + plural(v, 'pessoa votou', 'pessoas votaram') + ' até agora. Os vencedores continuam escondidos até você revelar.', 'Encerrar votação'],
+      espera: ['Fechar o site até a festa?', 'Ninguém poderá enviar fotos nem votar. O que já foi enviado e os votos ficam guardados.', 'Colocar em “Em breve”'],
       inscricoes: ['Voltar para as inscrições?', 'As inscrições reabrem e a votação fecha. Os votos já dados ficam guardados e os vencedores voltam a ficar escondidos.', 'Reabrir inscrições']
     };
+    if (cfg.phase === 'espera' && p === 'inscricoes') texts.inscricoes = ['Abrir as inscrições?', 'Os convidados poderão enviar a foto da fantasia e do prato a partir de agora.', 'Abrir inscrições'];
     if (cfg.phase === 'resultado' && p === 'votacao') texts.votacao = ['Reabrir a votação?', 'Os vencedores já revelados voltam a ficar escondidos e a votação aceita votos de novo.', 'Reabrir votação'];
     const t = texts[p];
     if (!(await ask({ title: t[0], text: t[1], ok: t[2] }))) return;
@@ -732,7 +737,7 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
     f.form.addEventListener('submit', (e) => {
       e.preventDefault();
       if (!db || !canWrite) return;
-      if (cfg.phase !== 'inscricoes') return say('As inscrições foram encerradas.', true);
+      if (cfg.phase !== 'inscricoes') return say(cfg.phase === 'espera' ? 'As inscrições ainda não abriram.' : 'As inscrições foram encerradas.', true);
       if (!f.pending) return say('Escolha a foto antes de enviar.', true);
       const prev = store[cat.id].get(me), now = Date.now();
       const data = { name: f.name.value.trim(), title: f.title.value.trim(), tag: f.tag.value.trim(), photo: f.pending, createdAt: (prev && prev.createdAt) || now, updatedAt: now };
@@ -746,7 +751,7 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
     });
     f.remove.addEventListener('click', () => {
       if (!db || !canWrite) return;
-      if (cfg.phase !== 'inscricoes') return say('As inscrições foram encerradas.', true);
+      if (cfg.phase !== 'inscricoes') return say(cfg.phase === 'espera' ? 'As inscrições ainda não abriram.' : 'As inscrições foram encerradas.', true);
       db.doc(cat.col + '/' + me).delete().then(() => {
         store[cat.id].delete(me);
         f.title.value = ''; f.tag.value = ''; f.file.value = ''; f.cam.value = ''; f.setThumb(null); f.pending = null; f.prefilled = false;
@@ -791,12 +796,13 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
     setBanner('');
   }
   function renderSteps() {
-    const idx = PHASES.findIndex((p) => p.id === cfg.phase);
-    $('steps').replaceChildren(...PHASES.map((p, i) =>
+    const steps = PHASES.filter((p) => p.id !== 'espera');
+    const idx = steps.findIndex((p) => p.id === cfg.phase);
+    $('steps').replaceChildren(...steps.map((p, i) =>
       h('li', { class: i < idx ? 'done' : i === idx ? 'now' : '', 'aria-current': i === idx ? 'step' : null },
         candleEl(i <= idx, i === idx),
         h('span', { class: 'mono' }, 'Etapa ' + (i + 1)), h('b', null, p.label), h('span', { class: 'count' }, p.sub))));
-    const cur = PHASES[idx];
+    const cur = PHASES.find((p) => p.id === cfg.phase) || PHASES[1];
     $('status').replaceChildren(h('b', null, cur.note[0]), h('span', null, cur.note[1]));
   }
   function renderAdmin() {
@@ -812,7 +818,7 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
         h('div', { class: 'stat' }, h('span', { class: 'mono count' }, 'Votaram'), h('b', null, votes.size))),
       h('div', { class: 'seg' }, PHASES.map((p) =>
         h('button', { class: 'btn sm' + (cfg.phase === p.id ? '' : ' ghost'), type: 'button', disabled: cfg.phase === p.id || busyCount, onclick: () => setPhase(p.id) },
-          cfg.phase === p.id ? p.label + ' (atual)' : 'Ir para ' + p.label.toLowerCase())))
+          cfg.phase === p.id ? p.label + ' (atual)' : (p.id === 'espera' ? 'Voltar para “Em breve”' : 'Ir para ' + p.label.toLowerCase()))))
     ];
     if (cfg.phase === 'resultado') {
       parts.push(h('div', { class: 'reveals' },
@@ -837,6 +843,13 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
 
   function renderInscricoes(main) {
     const cat = CATS.find((c) => c.id === activeCat);
+    if (cfg.phase === 'espera') {
+      main.replaceChildren(h('div', { class: 'empty soon' },
+        h('h3', null, 'A festa ainda vai começar!'),
+        h('p', null, 'Por enquanto é só para conhecer. No dia da festa o site abre: você manda a foto da sua fantasia e do seu prato, e depois todo mundo vota na Melhor Fantasia e no Melhor Prato Temático.'),
+        h('p', null, 'Toque em “Como funciona” para ver o passo a passo.')));
+      return;
+    }
     const list = sortedItems(cat.id);
     main.replaceChildren(
       h('div', { class: 'sec-head' }, h('h2', null, 'Quem já entrou'), h('span', { class: 'mono count' }, plural(store.fantasia.size + store.prato.size, 'envio', 'envios'))),
@@ -1061,7 +1074,7 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
     document.addEventListener('keydown', tutKeys);
   }
   function autoTut() {
-    if (tutAuto) return;
+    if (tutAuto || cfg.phase === 'espera') return;
     tutAuto = true;
     if (!tutSeen()) openTut();
   }
