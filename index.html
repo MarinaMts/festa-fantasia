@@ -168,7 +168,8 @@ label.pickbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-wi
 .zoom svg{width:24px;height:24px}
 .nbadge{position:absolute;left:-6px;top:-8px;z-index:2;min-width:38px;height:38px;padding:0 8px;border-radius:19px;display:grid;place-items:center;background:var(--fire);color:#1A0B05;font-family:var(--mono);font-weight:700;font-size:.9rem;box-shadow:0 4px 10px rgba(0,0,0,.5);transform:rotate(-8deg)}
 .rm{margin-top:4px}
-.wrap.big{zoom:1.18}
+.btn.xl{font-size:1.45rem;padding:20px 34px;min-height:88px;flex:1 1 100%;max-width:440px;border-radius:18px;animation:xlp 2.4s ease-in-out infinite}
+@keyframes xlp{0%,100%{box-shadow:0 0 0 0 rgba(255,138,61,.55)}50%{box-shadow:0 0 0 14px rgba(255,138,61,0)}}
 .tools{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 .meta{background:linear-gradient(180deg,#2A1C10,#170E07);border:1px solid #7A5528;border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;box-shadow:inset 0 1px 0 rgba(255,210,150,.18)}
 .meta h3,.meta p{overflow-wrap:anywhere}
@@ -196,6 +197,31 @@ label.pickbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-wi
 .tab[aria-selected=true] i{color:var(--accent-ink)}
 .hint{color:var(--mute);margin-bottom:18px}
 
+.hall{display:flex;flex-direction:column;gap:30px}
+.hall-head{text-align:center;display:flex;flex-direction:column;gap:6px;align-items:center}
+.hall-head h2{font-size:2.5rem;background:linear-gradient(180deg,#FFF1CC,#F0B060 55%,#E2761E);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 0 18px rgba(255,150,60,.35))}
+.hall-head p{color:var(--mute);font-size:1.1rem}
+.hcat{position:relative;border:1px solid var(--gold);border-radius:26px;padding:26px 16px 24px;background:radial-gradient(110% 70% at 50% 0%,rgba(231,162,79,.24),transparent 62%),linear-gradient(180deg,var(--surface),#150E20);display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;box-shadow:0 0 46px rgba(255,138,61,.16),inset 0 0 0 1px rgba(255,226,181,.08)}
+.hcat h3{font-family:var(--display);font-weight:400;font-size:1.9rem;color:#FFE2B5}
+.champs{display:flex;flex-wrap:wrap;gap:22px;justify-content:center;width:100%}
+.champ{display:flex;flex-direction:column;align-items:center;gap:8px;width:min(100%,310px)}
+.champ .mono{color:var(--gold)}
+.hcrown{width:64px;height:64px;color:#FFD28F;filter:drop-shadow(0 0 16px rgba(255,190,90,.8));animation:hbob 3s ease-in-out infinite}
+.hcrown svg{width:100%;height:100%;stroke:currentColor;fill:rgba(255,210,143,.25);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+@keyframes hbob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.champ-ph{width:100%;border-radius:20px;box-shadow:0 0 0 3px #F0B060,0 0 38px rgba(255,170,70,.55);animation:hglow 3s ease-in-out infinite}
+@keyframes hglow{0%,100%{box-shadow:0 0 0 3px #F0B060,0 0 26px rgba(255,170,70,.4)}50%{box-shadow:0 0 0 3px #FFD28F,0 0 52px rgba(255,170,70,.75)}}
+.champ .nm{font-family:var(--display);font-size:2rem;line-height:1.05;color:#FFE2B5;overflow-wrap:anywhere}
+.champ p{color:var(--mute)}
+.runners{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;width:100%;margin-top:6px;padding-top:18px;border-top:1px dashed var(--line)}
+.runner{display:flex;flex-direction:column;align-items:center;gap:8px;min-width:0}
+.hall .medal{width:46px;height:46px;font-size:1.6rem}
+.rone{display:flex;flex-direction:column;gap:4px;width:100%;min-width:0}
+.rone b{overflow-wrap:anywhere}.rone span{color:var(--mute);font-size:.95rem}
+.hall-all{display:flex;flex-direction:column;gap:22px;padding-top:6px}
+.hall-all>h2{text-align:center}
+.hall-sec{display:flex;flex-direction:column;gap:14px}
+.hall-sec h3{font-family:var(--display);font-weight:400;font-size:1.5rem;color:var(--gold)}
 .results{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:20px}
 .res{background:linear-gradient(180deg,var(--surface),#150E20);border:1px solid var(--line);border-radius:20px;padding:24px 20px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .sealed{border:2px dashed var(--edge);border-radius:12px;padding:34px 14px;text-align:center;color:var(--mute);display:flex;flex-direction:column;gap:12px;align-items:center}
@@ -338,7 +364,7 @@ label.pickbtn svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-wi
         <span class="prize"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-crown"/></svg>Melhor fantasia</span>
         <span class="prize"><svg viewBox="0 0 48 48" aria-hidden="true"><use href="#i-crown"/></svg>Melhor prato temático</span>
       </div>
-      <div class="tools"><button class="btn" id="how" type="button">Como funciona</button><button class="btn ghost" id="big" type="button" aria-pressed="false">Letras maiores</button><button class="btn ghost" id="snd" type="button" aria-pressed="true">Som: ligado</button><button class="btn ghost" id="mus" type="button">Tocar música</button></div>
+      <div class="tools"><button class="btn" id="how" type="button">Como funciona</button></div>
       <div class="spider" aria-hidden="true">
         <svg viewBox="0 0 44 120">
           <line x1="22" y1="0" x2="22" y2="86" stroke="rgba(246,235,211,.65)" stroke-width="1.2"/>
@@ -564,7 +590,7 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
   }
   /* roteiro da revelação: 3º, 2º, 1º (cada um com suspense + tela) e o pódio */
   function stagesFor(cat) {
-    const k = tiers(cat).length, st = [];
+    const k = cat === 'prato' ? Math.min(1, tiers(cat).length) : tiers(cat).length, st = [];
     if (!k) st.push({ kind: 'susp', place: 1, dur: 3000 * SPEED });
     for (let p = k; p >= 1; p--) {
       st.push({ kind: 'susp', place: p, dur: SUSP[p] * SPEED });
@@ -915,7 +941,44 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
     }
     return h('article', { class: 'res ornate' }, h('h3', null, h('span', { class: 'crown' }, '♛ '), cat.label), inner);
   }
+  function hallCat(cat) {
+    const ts = tiers(cat.id);
+    const get = (w) => store[cat.id].get(w.id);
+    const champs = ts[0] ? ts[0].items.filter(get) : [];
+    const runners = [1, 2].filter((i) => ts[i]).map((i) => ({ place: i + 1, items: ts[i].items.filter(get) })).filter((r) => r.items.length);
+    return h('section', { class: 'hcat', 'aria-label': cat.label },
+      h('span', { class: 'mono eyebrow' }, 'Prêmio'),
+      h('h3', null, cat.label),
+      champs.length
+        ? h('div', { class: 'champs' }, champs.map((w) => { const c = get(w); return h('div', { class: 'champ' },
+            h('div', { class: 'hcrown' }, icon('crown')),
+            h('span', { class: 'mono' }, champs.length > 1 ? 'Empate no 1º lugar' : '1º lugar'),
+            h('div', { class: 'champ-ph' }, photoBtn(c)),
+            h('div', { class: 'nm' }, titleOf(c)),
+            h('p', null, c.name + ' · ' + plural(w.n, 'voto', 'votos'))); }))
+        : h('p', { class: 'count' }, 'Ninguém recebeu voto nesse prêmio.'),
+      runners.length ? h('div', { class: 'runners' }, runners.map((r) => h('div', { class: 'runner' },
+        h('div', { class: 'medal m' + r.place }, r.place),
+        r.items.map((w) => { const c = get(w); return h('div', { class: 'rone' }, photoBtn(c), h('b', null, titleOf(c)), h('span', null, c.name)); })))) : null);
+  }
+  function renderHall(main) {
+    main.replaceChildren(h('div', { class: 'hall' },
+      h('div', { class: 'hall-head' },
+        h('span', { class: 'mono eyebrow' }, 'Noite das Fantasias'),
+        h('h2', null, 'Os vencedores da noite'),
+        h('p', null, 'Parabéns a todo mundo que caprichou!')),
+      CATS.map(hallCat),
+      h('div', { class: 'hall-all' },
+        h('h2', null, 'Todos os participantes'),
+        CATS.map((cat) => {
+          const list = sortedItems(cat.id, true);
+          return list.length ? h('div', { class: 'hall-sec' },
+            h('h3', null, cat.tab + ' (' + list.length + ')'),
+            h('div', { class: 'grid' }, list.map(([id, c]) => card(id, c, null, false, false, {})))) : null;
+        }))));
+  }
   function renderResultado(main) {
+    if (CATS.every((c) => isRevealed(c.id)) && !counting()) return renderHall(main);
     main.replaceChildren(
       h('div', { class: 'sec-head' }, h('h2', null, 'Vencedores')),
       h('div', { class: 'results' }, CATS.map(resultCard)));
@@ -970,6 +1033,7 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
 
   function render() {
     renderBanner(); renderSteps(); renderAdmin(); renderForms(); renderFooter();
+    $('how').classList.toggle('xl', cfg.phase === 'espera');
     const main = $('main');
     if (cfg.phase === 'votacao') renderVotacao(main);
     else if (cfg.phase === 'resultado') renderResultado(main);
@@ -1079,17 +1143,10 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
     if (!tutSeen()) openTut();
   }
   $('how').addEventListener('click', openTut);
-  (function () {
-    const w = document.querySelector('.wrap'), b = $('big');
-    const set = (on) => { w.classList.toggle('big', on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.textContent = on ? 'Letras normais' : 'Letras maiores'; };
-    try { if (localStorage.getItem('big') === '1') set(true); } catch (e) {}
-    b.addEventListener('click', () => { const on = !w.classList.contains('big'); set(on); try { localStorage.setItem('big', on ? '1' : '0'); } catch (e) {} });
-  })();
 
   /* ---------- som (sintetizado no aparelho, sem arquivos) ---------- */
   const snd = (() => {
     let ctx = null, master = null, on = true;
-    try { on = localStorage.getItem('snd') !== '0'; } catch (e) {}
     const hz = (m) => 440 * Math.pow(2, (m - 69) / 12);
     function init() {
       if (ctx) return ctx;
@@ -1194,20 +1251,6 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
   window.addEventListener('pagehide', leave);
   window.addEventListener('beforeunload', leave);
   ['pointerdown', 'touchend', 'click', 'keydown'].forEach((ev) => document.addEventListener(ev, () => { if (!snd.primed || !snd.running()) snd.unlock(); }, { passive: true }));
-  (function () {
-    const b = $('snd');
-    const paint = () => { b.setAttribute('aria-pressed', snd.on ? 'true' : 'false'); b.textContent = snd.on ? 'Som: ligado' : 'Som: desligado'; };
-    paint();
-    b.addEventListener('click', () => { snd.set(!snd.on); paint(); if (snd.on) snd.hit(3); });
-    const m = $('mus');
-    const paintM = () => { m.textContent = snd.playing ? 'Parar música' : 'Tocar música'; m.setAttribute('aria-pressed', snd.playing ? 'true' : 'false'); };
-    snd.onChange = paintM;
-    m.addEventListener('click', () => {
-      if (snd.playing) { snd.stop(); paintM(); return; }
-      if (!snd.on) { snd.set(true); paint(); }
-      snd.podium();
-    });
-  })();
 
   /* ---------- tela de suspense e pódio ---------- */
   function confetti(n, cols) {
