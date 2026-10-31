@@ -590,7 +590,7 @@ const ADMIN_EMAIL = "marinalucassmartynns@gmail.com"; // o e-mail Google de quem
   }
   /* roteiro da revelação: 3º, 2º, 1º (cada um com suspense + tela) e o pódio */
   function stagesFor(cat) {
-    const k = cat === 'prato' ? Math.min(1, tiers(cat).length) : tiers(cat).length, st = [];
+    const k = tiers(cat).length, st = [];
     if (!k) st.push({ kind: 'susp', place: 1, dur: 3000 * SPEED });
     for (let p = k; p >= 1; p--) {
       st.push({ kind: 'susp', place: p, dur: SUSP[p] * SPEED });
